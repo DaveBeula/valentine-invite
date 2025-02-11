@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <style>
+        body {
+            background-color: pink;
+            text-align: center;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+
+        h1 {
+            margin-top: 20%;
+            font-size: 2.5em;
+            color: white;
+            text-shadow: 2px 2px 4px red;
+        }
+
+        .buttons {
+            position: absolute;
+            top: 75%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        button {
+            font-size: 20px;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .yes {
+            background-color: red;
+            color: white;
+        }
+
+        .no {
+            background-color: white;
+            color: red;
+        }
+
+        .heart {
+            position: absolute;
+            color: red;
+            font-size: 30px;
+            animation: float 4s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100vh); opacity: 0; }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                background-color: gray;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Will You Be My Valentine? ❤️</h1>
+
+    <div class="buttons">
+        <button class="yes" onclick="answerYes()">YES</button>
+        <button class="no" onclick="answerNo()">NO</button>
+    </div>
+
+    <script>
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML = "❤️";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.top = Math.random() * 100 + "vh";
+            heart.style.fontSize = Math.random() * 30 + 20 + "px";
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 4000);
+        }
+
+        function answerYes() {
+            fetch('/valentine-response?answer=yes'); // Logs the response
+            document.body.innerHTML = "<h1 style='color: red; font-size: 3em;'>YAY! ❤️ See you on Valentine's! 💕</h1>";
+            for (let i = 0; i < 50; i++) {
+                setTimeout(createHeart, i * 100);
+            }
+        }
+
+        function answerNo() {
+            fetch('/valentine-response?answer=no'); // Logs the response
+            document.body.style.animation = "fadeOut 2s forwards";
+            setTimeout(() => {
+                document.body.innerHTML = "<h1 style='color: white; font-size: 3em;'>😢 Maybe next time...</h1>";
+            }, 2000);
+        }
+
+        setInterval(createHeart, 500);
+    </script>
+
+</body>
+</html>
